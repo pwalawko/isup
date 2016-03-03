@@ -1,22 +1,22 @@
 import sys
 
 
-def counting(a1, r, n):
+def main():
     try:
-        a1 = int(a1)
-        n = int(n)
-        r = int(r)
+        a1 = int(sys.argv[1])
+        n = int(sys.argv[3])
+        r = int(sys.argv[2])
     except ValueError:
         print('Incorrect parameter!')
-    else:
-        print(a1 + (n - 1) * r)
-
-if __name__ == '__main__':
-    try:
-        a1 = sys.argv[1]
-        n = sys.argv[3]
-        r = sys.argv[2]
     except IndexError:
         print('Parameter missing!')
     else:
-        counting(a1, r, n)
+        print(counting(a1, r, n))
+
+
+def counting(a1, r, n):
+    return a1 + (n - 1) * r
+
+
+if __name__ == '__main__':
+    main()
