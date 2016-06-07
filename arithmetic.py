@@ -15,7 +15,7 @@ def main():
 
 
 def counting(a1, r, n):
-    assert (n >= 0),"Invalid value!"
+    assert n >= 0, "Invalid value!"
     return a1 + (n - 1) * r
 
 
