@@ -1,7 +1,7 @@
 import sys
 
 
-def counting():
+def main():
     try:
         a1 = int(sys.argv[1])
         n = int(sys.argv[3])
@@ -11,6 +11,13 @@ def counting():
     except IndexError:
         print('Parameter missing!')
     else:
-        print(a1 + (n-1) * r)
+        print(counting(a1, r, n))
 
-counting()
+
+def counting(a1, r, n):
+    assert n >= 0, "Invalid value!"
+    return a1 + (n - 1) * r
+
+
+if __name__ == '__main__':
+    main()
