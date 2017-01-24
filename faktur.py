@@ -168,6 +168,11 @@ def fakturowanie(amount):
                     jednosci_trojliczby_slownie = ''
                 else:
                     jednostka_ze_slownika = 5
+            elif jednosci_trojliczby == 1:
+                jednosci_trojliczby_slownie = str(JEDNOSCI[str(jednosci_trojliczby)]) + ' '
+                jednostka_ze_slownika = jednosci_trojliczby
+                if setki_trojliczby > 0 or dziesiatki_trojliczby > 0:
+                    jednostka_ze_slownika = 5
             else:
                 jednosci_trojliczby_slownie = str(JEDNOSCI[str(jednosci_trojliczby)]) + ' '
                 jednostka_ze_slownika = jednosci_trojliczby
@@ -201,6 +206,11 @@ def fakturowanie(amount):
     # Trzeba obsłużyć przypadek, gdy nie ma setek, ale są miliony albo tysiące,
     # wtedy trzeba dodać "złotych" które zostaną pominięte w funkcji trójliczb
     if liczba_setek == 0 and (liczba_milionow > 0 or liczba_tysiecy > 0):
+        liczba_setek_slownie = 'złotych '
+
+    # Przypadek gdy liczba kończy się na 1, ale nie jest jedynką
+    if ((liczba_milionow > 0 or liczba_tysiecy > 0 or liczba_setek > 1) and
+        (liczba_setek - (liczba_setek // 10 * 10)) == 1):
         liczba_setek_slownie = 'złotych '
 
     # Tutaj obsługujemy pzypadek, gdy nie ma złotych albo groszy - wtedy zamiast
