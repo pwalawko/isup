@@ -112,6 +112,94 @@ def main():
         print(fakturowanie(amount))
 
 
+# Dla setek, tysięcy i milionów część setkowa będzie taka sama,
+# tak więc możemy zrobić jedną funkcję
+# i wykorzystać ją w tych trzech przypadkach.
+# Kwotą może być liczba milionów, tysięcy i jedności.
+def trojliczby(kwota):
+    # Sprawdzamy ile jest setek.
+    setki_trojliczby = kwota // 100
+    # Jeśli są, bierzemy ze słownika z setkami wartość
+    # odpowiadającą ilości setek.
+    if setki_trojliczby >= 1:
+        setki_trojliczby_slownie = SETKI[str(setki_trojliczby)] + ' '
+    # Jeśli nie ma, zostawiamy setki puste.
+    else:
+        setki_trojliczby_slownie = ''
+    # Sprawdzamy ile jest dziesiątek, odejmując najpierw
+    # uwzględnione już wcześniej setki.
+    dziesiatki_trojliczby = (kwota - (setki_trojliczby * 100)) // 10
+    # Jeśli są, bierzemy ze słownika z dziesiątkami wartość
+    # odpowiadającą ilości dziesiątek.
+    # Trzeba wziąć pod uwagę, że dla nastek zapis słowny jest inny
+    # niż dla dziesiątek większych niż 1.
+    jednosci_trojliczby_slownie = ''
+    jednostka_ze_slownika = 'nic'
+    if dziesiatki_trojliczby == 1:
+        dzies_trojliczby_slownie = NASTKI[
+            str((kwota - (setki_trojliczby * 100)) % 10)
+        ] + ' '
+        # Jeśli są nastki, kwota słownie zawsze końcy się tak samo,
+        # więc można użyć stałą wartość.
+        jednostka_ze_slownika = 5
+    # Teraz zapis dla kwóty dziesiątek innej niż nastki.
+    elif 2 <= dziesiatki_trojliczby <= 9:
+        dzies_trojliczby_slownie = DZIESIATKI[
+            str(dziesiatki_trojliczby)
+        ] + ' '
+        # Jedności są obsłużone w ramach dziesiątek,
+        # ponieważ nie będzie ich przy nastkach.
+        # Sprawdzamy ilość jedności.
+        jednosci_trojliczby = (
+            kwota -
+            (setki_trojliczby * 100) -
+            (dziesiatki_trojliczby * 10)
+        ) // 1
+        if jednosci_trojliczby > 0:
+            jednosci_trojliczby_slownie = str(
+                JEDNOSCI[str(jednosci_trojliczby)]
+            ) + ' '
+        # Czas na zapis słowny jednostek. Będą one pobierane ze słownika,
+        # w zaneżności od tego czy funkcja jest zastosowana dla milionów,
+        # tysięcy czy setek zł.
+        jednostka_ze_slownika = jednosci_trojliczby
+        # Trzeba obsłużyć przypadek, gdy liczba kończy się na 1.
+        if jednosci_trojliczby == 1:
+            jednostka_ze_slownika = 5
+    # I zapis dla kwoty gdy nie ma dziesiątek.
+    else:
+        dzies_trojliczby_slownie = ''
+        jednosci_trojliczby = (
+            kwota -
+            (setki_trojliczby * 100) -
+            (dziesiatki_trojliczby * 10)
+        ) // 1
+        if jednosci_trojliczby == 0:
+            if setki_trojliczby == 0:
+                jednosci_trojliczby_slownie = ''
+            else:
+                jednostka_ze_slownika = 5
+        elif jednosci_trojliczby == 1:
+            jednosci_trojliczby_slownie = str(
+                JEDNOSCI[str(jednosci_trojliczby)]
+            ) + ' '
+            jednostka_ze_slownika = jednosci_trojliczby
+            if setki_trojliczby > 0 or dziesiatki_trojliczby > 0:
+                jednostka_ze_slownika = 5
+        else:
+            jednosci_trojliczby_slownie = str(
+                JEDNOSCI[str(jednosci_trojliczby)]
+            ) + ' '
+            jednostka_ze_slownika = jednosci_trojliczby
+    # Funkcja zwraca zapis liczy oraz wartość jednostki ze słownika.
+    zapis_liczby = (
+        setki_trojliczby_slownie +
+        dzies_trojliczby_slownie +
+        jednosci_trojliczby_slownie
+    )
+    return zapis_liczby, jednostka_ze_slownika
+
+
 def fakturowanie(amount):
     if not isinstance(amount, Decimal):
         raise TypeError('Nieprawidłowe dane!')
@@ -121,69 +209,7 @@ def fakturowanie(amount):
         raise ValueError('Zbyt mała wartość!')
     amount.quantize(Decimal('.01'))
 
-    # Dla setek, tysięcy i milionów część setkowa będzie taka sama,
-    # tak więc możemy zrobić jedną funkcję i wykorzystać ją w tych trzech przypadkach.
-    # Kwotą może być liczba milionów, tysięcy i jedności.
-    def trojliczby(kwota):
-        #import ipdb; ipdb.set_trace()
-        # Sprawdzamy ile jest setek.
-        setki_trojliczby = kwota // 100
-        # Jeśli są, bierzemy ze słownika z setkami wartość odpowiadającą ilości setek.
-        if setki_trojliczby >= 1:
-            setki_trojliczby_slownie = SETKI[str(setki_trojliczby)] + ' '
-        # Jeśli nie ma, zostawiamy setki puste.
-        else:
-            setki_trojliczby_slownie = ''
-        # Sprawdzamy ile jest dziesiątek, odejmując najpierw uwzględnione już wcześniej setki.
-        dziesiatki_trojliczby = (kwota - (setki_trojliczby * 100)) // 10
-        # Jeśli są, bierzemy ze słownika z dziesiątkami wartość odpowiadającą ilości dziesiątek.
-        # Trzeba wziąć pod uwagę, że dla nastek zapis słowny jest inny niż dla dziesiątek większych niż 1.
-        jednosci_trojliczby_slownie = ''
-        jednostka_ze_slownika = 'nic'
-        if dziesiatki_trojliczby == 1:
-            dzies_trojliczby_slownie = NASTKI[str((kwota - (setki_trojliczby * 100)) % 10)] + ' '
-            # Jeśli są nastki, kwota słownie zawsze końcy się tak samo,
-            # więc można użyć stałą wartość.
-            jednostka_ze_slownika = 5
-        # Teraz zapis dla kwóty dziesiątek innej niż nastki.
-        elif 2 <= dziesiatki_trojliczby <= 9:
-            dzies_trojliczby_slownie = DZIESIATKI[str(dziesiatki_trojliczby)] + ' '
-            # Jedności są obsłużone w ramach dziesiątek, ponieważ nie będzie ich przy nastkach.
-            # Sprawdzamy ilość jedności.
-            jednosci_trojliczby = (kwota - (setki_trojliczby * 100) - (dziesiatki_trojliczby * 10)) // 1
-            if jednosci_trojliczby > 0:
-                jednosci_trojliczby_slownie = str(JEDNOSCI[str(jednosci_trojliczby)]) + ' '
-            # Czas na zapis słowny jednostek. Będą one pobierane ze słownika,
-            # w zaneżności od tego czy funkcja jest zastosowana dla milionów, tysięcy czy setek zł.
-            jednostka_ze_slownika = jednosci_trojliczby
-            # Trzeba obsłużyć przypadek, gdy liczba kończy się na 1.
-            if jednosci_trojliczby == 1:
-                jednostka_ze_slownika = 5
-        # I zapis dla kwoty gdy nie ma dziesiątek.
-        else:
-            dzies_trojliczby_slownie = ''
-            jednosci_trojliczby = (kwota - (setki_trojliczby * 100) - (dziesiatki_trojliczby * 10)) // 1
-            if jednosci_trojliczby == 0:
-                if setki_trojliczby == 0:
-                    jednosci_trojliczby_slownie = ''
-                else:
-                    jednostka_ze_slownika = 5
-            elif jednosci_trojliczby == 1:
-                jednosci_trojliczby_slownie = str(JEDNOSCI[str(jednosci_trojliczby)]) + ' '
-                jednostka_ze_slownika = jednosci_trojliczby
-                if setki_trojliczby > 0 or dziesiatki_trojliczby > 0:
-                    jednostka_ze_slownika = 5
-            else:
-                jednosci_trojliczby_slownie = str(JEDNOSCI[str(jednosci_trojliczby)]) + ' '
-                jednostka_ze_slownika = jednosci_trojliczby
-        # Funkcja zwraca zapis liczy oraz wartość jednostki ze słownika.
-        return (
-            setki_trojliczby_slownie +
-            dzies_trojliczby_slownie +
-            jednosci_trojliczby_slownie
-            ), (jednostka_ze_slownika)
-
-    # Teraz czas wykonać funkcję trójliczb dla milionów, tysięcy, setek i groszy.
+    # Tutaj wykonujemy funkcję trójliczb dla milionów, tysięcy, setek i groszy.
     liczba_milionow = amount // 1000000
     miliony, liczba_milionow_slownie = trojliczby(liczba_milionow)
     liczba_milionow_slownie = MILIONY_SLOWNIE[liczba_milionow_slownie] + ' '
@@ -204,17 +230,17 @@ def fakturowanie(amount):
     liczba_groszy_slownie = GROSZE_SLOWNIE[liczba_groszy_slownie]
 
     # Trzeba obsłużyć przypadek, gdy nie ma setek, ale są miliony albo tysiące,
-    # wtedy trzeba dodać "złotych" które zostaną pominięte w funkcji trójliczb
+    # wtedy trzeba dodać "złotych", które zostaną pominięte w funkcji trójliczb.
     if liczba_setek == 0 and (liczba_milionow > 0 or liczba_tysiecy > 0):
         liczba_setek_slownie = 'złotych '
 
-    # Przypadek gdy liczba kończy się na 1, ale nie jest jedynką
+    # Przypadek gdy liczba kończy się na 1, ale nie jest jedynką.
     if ((liczba_milionow > 0 or liczba_tysiecy > 0 or liczba_setek > 1) and
         (liczba_setek - (liczba_setek // 10 * 10)) == 1):
         liczba_setek_slownie = 'złotych '
 
-    # Tutaj obsługujemy pzypadek, gdy nie ma złotych albo groszy - wtedy zamiast
-    # wyświetlać nic, trzeba wyświetlić zero.
+    # Tutaj obsługujemy pzypadek, gdy nie ma złotych albo groszy -
+    # wtedy zamiast wyświetlać nic, trzeba wyświetlić zero.
     if grosze == '':
         liczba_groszy_slownie = 'zero groszy'
     if liczba_milionow + liczba_tysiecy + liczba_setek == 0:
