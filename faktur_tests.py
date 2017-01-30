@@ -41,7 +41,7 @@ PRZYKLADY_KWOT = {
 
 class TestFaktur(unittest.TestCase):
 
-    def test_1_zl(self):
+    def test_example_values(self):
         for kwota, slownie in PRZYKLADY_KWOT.items():
             self.assertEqual(faktur.fakturowanie(Decimal(kwota)), slownie)
 
