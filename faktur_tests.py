@@ -1,7 +1,7 @@
 from decimal import Decimal
 import unittest
 
-import faktur
+import fiddler2
 
 
 PRZYKLADY_KWOT = {
@@ -43,11 +43,11 @@ class TestFaktur(unittest.TestCase):
 
     def test_example_values(self):
         for kwota, slownie in PRZYKLADY_KWOT.items():
-            self.assertEqual(faktur.fakturowanie(Decimal(kwota)), slownie)
+            self.assertEqual(fiddler2.fakturowanie(Decimal(kwota)), slownie)
 
     def test_raise_value_error(self):
-        self.assertRaises(TypeError, faktur.fakturowanie, 'a')
-        self.assertRaises(TypeError, faktur.fakturowanie, 2)
+        self.assertRaises(TypeError, fiddler2.fakturowanie, 'a')
+        self.assertRaises(TypeError, fiddler2.fakturowanie, 2)
 
 
 if __name__ == '__main__':
