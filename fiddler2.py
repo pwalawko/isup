@@ -150,23 +150,10 @@ GROSZE_SLOWNIE = {
 }
 
 
-def main():
-    try:
-        kwota = Decimal(sys.argv[1])
-    except ValueError:
-        print('Nieprawidłowe dane!')
-    except IndexError:
-        print('Brakujący parametr!')
-    else:
-        print(fakturowanie(kwota))
-
-
 def podzial_na_trojki(kwota):
     trojki = []
     for liczba, slownik_jednostek in liczby.items():
         ilosc = kwota // liczba
-        if ilosc == 0:
-            pass
         if ilosc > 0:
             slownie, jednostka = trojki_na_slowa(ilosc)
             trojki.append(slownie)
@@ -273,8 +260,7 @@ def fakturowanie(kwota):
 
     trojki = podzial_na_trojki(kwota)
 
-    setki = trojki[-1]
-    trojki.pop()
+    setki = trojki.pop()
 
     liczba_setek = setki // 1
     stowy, liczba_setek_slownie = trojki_na_slowa(liczba_setek)
@@ -283,12 +269,12 @@ def fakturowanie(kwota):
     if liczba_setek_slownie != '':
         liczba_setek_slownie = liczba_setek_slownie + ' '
     zlote = all((a == '' for a in trojki[:-1]))
-    if liczba_setek_slownie == '' and zlote:
-        liczba_setek_slownie = 'zero złotych '
-    if liczba_setek_slownie == '' and not zlote:
-        liczba_setek_slownie = 'złotych '
-    if ((not zlote or liczba_setek > 1) and
-        (liczba_setek - (liczba_setek // 10 * 10)) == 1):
+    if liczba_setek_slownie == '':
+        liczba_setek_slownie = 'zero złotych ' if zlote else 'złotych '
+    if (
+        (not zlote or liczba_setek > 1) and
+        (liczba_setek - (liczba_setek // 10 * 10)) == 1
+    ):
         liczba_setek_slownie = 'złotych '
     trojki.append(liczba_setek_slownie)
     setki = (setki - (liczba_setek * 1)) * 100
@@ -304,6 +290,17 @@ def fakturowanie(kwota):
     kwota_slownie = ''.join(trojki)
 
     return kwota_slownie
+
+
+def main():
+    try:
+        kwota = Decimal(sys.argv[1])
+    except ValueError:
+        print('Nieprawidłowe dane!')
+    except IndexError:
+        print('Brakujący parametr!')
+    else:
+        print(fakturowanie(kwota))
 
 
 if __name__ == '__main__':
