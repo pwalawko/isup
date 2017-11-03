@@ -90,14 +90,12 @@ HUNDREDS = {
 HUNDREDS_WORDS = {
     0: 'złoty',
     1: 'złote',
-    2: 'złotych',
-    'nic': ''
+    2: 'złotych'
 }
 GROSZE_WORDS = {
     0: 'grosz',
     1: 'grosze',
-    2: 'groszy',
-    'nic': ''
+    2: 'groszy'
 }
 
 
