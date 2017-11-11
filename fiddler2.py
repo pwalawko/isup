@@ -34,48 +34,48 @@ THOUSANDS = {
 }
 
 UNITIES = {
-    '1': 'jeden',
-    '2': 'dwa',
-    '3': 'trzy',
-    '4': 'cztery',
-    '5': 'pięć',
-    '6': 'sześć',
-    '7': 'siedem',
-    '8': 'osiem',
-    '9': 'dziewięć'
+    1: 'jeden',
+    2: 'dwa',
+    3: 'trzy',
+    4: 'cztery',
+    5: 'pięć',
+    6: 'sześć',
+    7: 'siedem',
+    8: 'osiem',
+    9: 'dziewięć'
 }
 TEENS = {
-    '0': 'dziesięć',
-    '1': 'jedenaście',
-    '2': 'dwanaście',
-    '3': 'trzynaście',
-    '4': 'czternaście',
-    '5': 'piętnaście',
-    '6': 'szesnaście',
-    '7': 'siedemnaście',
-    '8': 'osiemnaście',
-    '9': 'dziewiętnaście'
+    0: 'dziesięć',
+    1: 'jedenaście',
+    2: 'dwanaście',
+    3: 'trzynaście',
+    4: 'czternaście',
+    5: 'piętnaście',
+    6: 'szesnaście',
+    7: 'siedemnaście',
+    8: 'osiemnaście',
+    9: 'dziewiętnaście'
 }
 TENS = {
-    '2': 'dwadzieścia',
-    '3': 'trzydzieści',
-    '4': 'czterdzieści',
-    '5': 'pięćdziesiąt',
-    '6': 'sześćdziesiąt',
-    '7': 'siedemdziesiąt',
-    '8': 'osiemdziesiąt',
-    '9': 'dziewięćdziesiąt'
+    2: 'dwadzieścia',
+    3: 'trzydzieści',
+    4: 'czterdzieści',
+    5: 'pięćdziesiąt',
+    6: 'sześćdziesiąt',
+    7: 'siedemdziesiąt',
+    8: 'osiemdziesiąt',
+    9: 'dziewięćdziesiąt'
 }
 HUNDREDS = {
-    '1': 'sto',
-    '2': 'dwieście',
-    '3': 'trzysta',
-    '4': 'czterysta',
-    '5': 'pięćset',
-    '6': 'sześćset',
-    '7': 'siedemset',
-    '8': 'osiemset',
-    '9': 'dziewięćset'
+    1: 'sto',
+    2: 'dwieście',
+    3: 'trzysta',
+    4: 'czterysta',
+    5: 'pięćset',
+    6: 'sześćset',
+    7: 'siedemset',
+    8: 'osiemset',
+    9: 'dziewięćset'
 }
 
 HUNDREDS_WORDS = {
@@ -121,7 +121,7 @@ def form_part(amount):
     # Jeśli są, bierzemy ze słownika z setkami wartość
     # odpowiadającą ilości setek.
     if setki_trojliczby >= 1:
-        setki_trojliczby_slownie = HUNDREDS[str(setki_trojliczby)] + ' '
+        setki_trojliczby_slownie = HUNDREDS[setki_trojliczby] + ' '
     # Jeśli nie ma, zostawiamy setki puste.
     else:
         setki_trojliczby_slownie = ''
@@ -135,12 +135,12 @@ def form_part(amount):
     jednosci_trojliczby_slownie = ''
     if dziesiatki_trojliczby == 1:
         dzies_trojliczby_slownie = TEENS[
-            str((amount - (setki_trojliczby * 100)) % 10)
+            ((amount - (setki_trojliczby * 100)) % 10)
         ] + ' '
     # Teraz zapis dla kwóty dziesiątek innej niż nastki.
     elif 2 <= dziesiatki_trojliczby <= 9:
-        dzies_trojliczby_slownie = DOZENS[
-            str(dziesiatki_trojliczby)
+        dzies_trojliczby_slownie = TENS[
+            (dziesiatki_trojliczby)
         ] + ' '
         # Jedności są obsłużone w ramach dziesiątek,
         # ponieważ nie będzie ich przy nastkach.
@@ -151,8 +151,8 @@ def form_part(amount):
             (dziesiatki_trojliczby * 10)
         ) // 1
         if jednosci_trojliczby > 0:
-            jednosci_trojliczby_slownie = str(
-                UNITIES[str(jednosci_trojliczby)]
+            jednosci_trojliczby_slownie = (
+                UNITIES[jednosci_trojliczby]
             ) + ' '
     # I zapis dla kwoty gdy nie ma dziesiątek.
     else:
@@ -166,12 +166,12 @@ def form_part(amount):
             if setki_trojliczby == 0:
                 jednosci_trojliczby_slownie = ''
         elif jednosci_trojliczby == 1:
-            jednosci_trojliczby_slownie = str(
-                UNITIES[str(jednosci_trojliczby)]
+            jednosci_trojliczby_slownie = (
+                UNITIES[jednosci_trojliczby]
             ) + ' '
         else:
-            jednosci_trojliczby_slownie = str(
-                UNITIES[str(jednosci_trojliczby)]
+            jednosci_trojliczby_slownie = (
+                UNITIES[jednosci_trojliczby]
             ) + ' '
     # Funkcja zwraca zapis liczy oraz wartość jednostki ze słownika.
     zapis_liczby = (
