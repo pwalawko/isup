@@ -56,7 +56,7 @@ TEENS = {
     '8': 'osiemnaście',
     '9': 'dziewiętnaście'
 }
-DOZENS = {
+TENS = {
     '2': 'dwadzieścia',
     '3': 'trzydzieści',
     '4': 'czterdzieści',
