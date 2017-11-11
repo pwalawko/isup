@@ -1,46 +1,37 @@
 import sys
 from decimal import Decimal
-from collections import OrderedDict
 
 
 BILLIARDS = {
-    0: 'biliard',
-    1: 'biliardy',
-    2: 'biliardów',
+    0: 'biliard ',
+    1: 'biliardy ',
+    2: 'biliardów ',
 }
 
 TRILLIONS = {
-    0: 'bilion',
-    1: 'biliony',
-    2: 'bilionów',
+    0: 'bilion ',
+    1: 'biliony ',
+    2: 'bilionów ',
 }
 
 BILLIONS = {
-    0: 'miliard',
-    1: 'miliardy',
-    2: 'miliardów',
+    0: 'miliard ',
+    1: 'miliardy ',
+    2: 'miliardów ',
 }
 
 
-MILLION = {
-    0: 'milion',
-    1: 'miliony',
-    2: 'milionów',
+MILLIONS = {
+    0: 'milion ',
+    1: 'miliony ',
+    2: 'milionów ',
 }
 
 THOUSANDS = {
-    0: 'tysiąc',
-    1: 'tysiące',
-    2: 'tysięcy',
+    0: 'tysiąc ',
+    1: 'tysiące ',
+    2: 'tysięcy ',
 }
-
-NUMBERS = OrderedDict([
-    (1000000000000000, BILLIARDS),
-    (1000000000000, TRILLIONS),
-    (1000000000, BILLIONS),
-    (1000000, MILLION),
-    (1000, THOUSANDS)
-])
 
 UNITIES = {
     '1': 'jeden',
@@ -98,17 +89,15 @@ GROSZE_WORDS = {
     2: 'groszy'
 }
 
+ORDERS = [THOUSANDS, MILLIONS, BILLIONS, TRILLIONS, BILLIARDS]
+
 
 def split_amount(amount):
     threes = []
-    for number, unit_dict in NUMBERS.items():
-        ilosc = amount // number
-        if ilosc > 0:
-            slownie, jednostka = trojki_na_slowa(ilosc)
-            threes.append(slownie)
-            jednostka = unit_dict[jednostka] + ' '
-            threes.append(jednostka)
-            amount = amount - number*ilosc
+    while amount // 1000 > 0:
+        three = amount % 1000
+        threes.append(three)
+        amount = amount // 1000
     threes.append(amount)
     return threes
 
@@ -123,10 +112,10 @@ def plural_form(n):
         else:
             plural = 2
 
-    return(plural)
+    return plural
 
 
-def trojki_na_slowa(amount):
+def form_part(amount):
     # Sprawdzamy ile jest setek.
     setki_trojliczby = amount // 100
     # Jeśli są, bierzemy ze słownika z setkami wartość
@@ -196,11 +185,10 @@ def trojki_na_slowa(amount):
     return zapis_liczby, plural_amount
 
 
-
 def fakturowanie(amount):
     if not isinstance(amount, Decimal):
         raise TypeError('Nieprawidłowe dane!')
-    if amount // list(NUMBERS.keys())[0] > 999:
+    if amount // 1000**len(ORDERS) > 999:
         raise ValueError('Zbyt duża wartość!')
     if amount < 0:
         raise ValueError('Zbyt mała wartość!')
@@ -208,15 +196,25 @@ def fakturowanie(amount):
 
     threes = split_amount(amount)
 
-    setki = threes.pop()
+    setki = threes.pop(0)
+
+    formed_amount = []
+    zipped_amount = list(zip(threes, ORDERS))[::-1]
+    for part, order in zipped_amount:
+        if part == 0:
+            continue
+        formed_part, unit = form_part(part)
+        unit = order[unit]
+        formed_amount.append(formed_part)
+        formed_amount.append(unit)
 
     liczba_setek = setki // 1
-    stowy, liczba_setek_slownie = trojki_na_slowa(liczba_setek)
-    threes.append(stowy)
+    stowy, liczba_setek_slownie = form_part(liczba_setek)
+    formed_amount.append(stowy)
     liczba_setek_slownie = HUNDREDS_WORDS[liczba_setek_slownie]
     if liczba_setek_slownie != '':
         liczba_setek_slownie = liczba_setek_slownie + ' '
-    zlote = all((a == '' for a in threes[:-1]))
+    zlote = all((a == '' for a in formed_amount[:-1]))
     if liczba_setek == 0:
         liczba_setek_slownie = 'zero złotych ' if zlote else 'złotych '
     if (
@@ -224,18 +222,18 @@ def fakturowanie(amount):
         (liczba_setek - (liczba_setek // 10 * 10)) == 1
     ):
         liczba_setek_slownie = 'złotych '
-    threes.append(liczba_setek_slownie)
+    formed_amount.append(liczba_setek_slownie)
     setki = (setki - (liczba_setek * 1)) * 100
 
     liczba_groszy = setki // 1
-    grosze, liczba_groszy_slownie = trojki_na_slowa(liczba_groszy)
-    threes.append(grosze)
+    grosze, liczba_groszy_slownie = form_part(liczba_groszy)
+    formed_amount.append(grosze)
     liczba_groszy_slownie = GROSZE_WORDS[liczba_groszy_slownie]
     if liczba_groszy == 0:
         liczba_groszy_slownie = 'zero groszy'
-    threes.append(liczba_groszy_slownie)
+    formed_amount.append(liczba_groszy_slownie)
 
-    kwota_slownie = ''.join(threes)
+    kwota_slownie = ''.join(formed_amount)
 
     return kwota_slownie
 
