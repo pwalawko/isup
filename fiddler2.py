@@ -82,62 +82,35 @@ def plural_form(n):
 
 
 def form_part(amount):
-    # Sprawdzamy ile jest setek.
     setki_trojliczby = amount // 100
-    # Jeśli są, bierzemy ze słownika z setkami wartość
-    # odpowiadającą ilości setek.
+    dziesiatki_trojliczby = (amount % 100) // 10
+    jednosci_trojliczby = (
+            amount -
+            (setki_trojliczby * 100) -
+            (dziesiatki_trojliczby * 10)
+        ) // 1
+
+    setki_trojliczby_slownie = ''
+    jednosci_trojliczby_slownie = ''
+    dzies_trojliczby_slownie = ''
+
     if setki_trojliczby >= 1:
         setki_trojliczby_slownie = HUNDREDS[setki_trojliczby]
-    # Jeśli nie ma, zostawiamy setki puste.
-    else:
-        setki_trojliczby_slownie = ''
-    # Sprawdzamy ile jest dziesiątek, odejmując najpierw
-    # uwzględnione już wcześniej setki.
-    dziesiatki_trojliczby = (amount - (setki_trojliczby * 100)) // 10
-    # Jeśli są, bierzemy ze słownika z dziesiątkami wartość
-    # odpowiadającą ilości dziesiątek.
-    # Trzeba wziąć pod uwagę, że dla nastek zapis słowny jest inny
-    # niż dla dziesiątek większych niż 1.
-    jednosci_trojliczby_slownie = ''
+
     if dziesiatki_trojliczby == 1:
         dzies_trojliczby_slownie = TEENS[
             ((amount - (setki_trojliczby * 100)) % 10)
         ]
-    # Teraz zapis dla kwóty dziesiątek innej niż nastki.
     elif 2 <= dziesiatki_trojliczby <= 9:
         dzies_trojliczby_slownie = TENS[(dziesiatki_trojliczby)]
-        # Jedności są obsłużone w ramach dziesiątek,
-        # ponieważ nie będzie ich przy nastkach.
-        # Sprawdzamy ilość jedności.
-        jednosci_trojliczby = (
-            amount -
-            (setki_trojliczby * 100) -
-            (dziesiatki_trojliczby * 10)
-        ) // 1
         if jednosci_trojliczby > 0:
-            jednosci_trojliczby_slownie = (
-                UNITIES[jednosci_trojliczby]
-            )
-    # I zapis dla kwoty gdy nie ma dziesiątek.
+            jednosci_trojliczby_slownie = (UNITIES[jednosci_trojliczby])
     else:
-        dzies_trojliczby_slownie = ''
-        jednosci_trojliczby = (
-            amount -
-            (setki_trojliczby * 100) -
-            (dziesiatki_trojliczby * 10)
-        ) // 1
-        if jednosci_trojliczby == 0:
-            if setki_trojliczby == 0:
-                jednosci_trojliczby_slownie = ''
-        elif jednosci_trojliczby == 1:
+        if jednosci_trojliczby != 0:
             jednosci_trojliczby_slownie = (
                 UNITIES[jednosci_trojliczby]
             )
-        else:
-            jednosci_trojliczby_slownie = (
-                UNITIES[jednosci_trojliczby]
-            )
-    # Funkcja zwraca zapis liczy oraz wartość jednostki ze słownika.
+
     zapis_liczby = (
         setki_trojliczby_slownie +
         dzies_trojliczby_slownie +
