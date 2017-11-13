@@ -2,36 +2,13 @@ import sys
 from decimal import Decimal
 
 
-BILLIARDS = {
-    0: 'biliard ',
-    1: 'biliardy ',
-    2: 'biliardów ',
-}
-
-TRILLIONS = {
-    0: 'bilion ',
-    1: 'biliony ',
-    2: 'bilionów ',
-}
-
-BILLIONS = {
-    0: 'miliard ',
-    1: 'miliardy ',
-    2: 'miliardów ',
-}
-
-
-MILLIONS = {
-    0: 'milion ',
-    1: 'miliony ',
-    2: 'milionów ',
-}
-
-THOUSANDS = {
-    0: 'tysiąc ',
-    1: 'tysiące ',
-    2: 'tysięcy ',
-}
+BILLIARDS = ('biliard ', 'biliardy ', 'biliardów ')
+TRILLIONS = ('bilion ', 'biliony ', 'bilionów ')
+BILLIONS = ('miliard ', 'miliardy ', 'miliardów ')
+MILLIONS = ('milion ', 'miliony ', 'milionów ')
+THOUSANDS = ('tysiąc ', 'tysiące ', 'tysięcy ')
+HUNDREDS_WORDS = ('złoty ', 'złote ', 'złotych ')
+GROSZE_WORDS = ('grosz', 'grosze', 'groszy')
 
 UNITIES = {
     1: 'jeden ',
@@ -76,17 +53,6 @@ HUNDREDS = {
     7: 'siedemset ',
     8: 'osiemset ',
     9: 'dziewięćset '
-}
-
-HUNDREDS_WORDS = {
-    0: 'złoty ',
-    1: 'złote ',
-    2: 'złotych '
-}
-GROSZE_WORDS = {
-    0: 'grosz',
-    1: 'grosze',
-    2: 'groszy'
 }
 
 ORDERS = [THOUSANDS, MILLIONS, BILLIONS, TRILLIONS, BILLIARDS]
