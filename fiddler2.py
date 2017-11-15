@@ -149,14 +149,13 @@ def fakturowanie(amount):
     stowy, liczba_setek_slownie = form_part(liczba_setek)
     formed_amount.append(stowy)
     liczba_setek_slownie = HUNDREDS_WORDS[liczba_setek_slownie]
-    if liczba_setek_slownie != '':
-        liczba_setek_slownie = liczba_setek_slownie
-    zlote = all((a == '' for a in formed_amount[:-1]))
+
+    are_zlote = all((a == '' for a in formed_amount[:-1]))
     if liczba_setek == 0:
-        liczba_setek_slownie = 'zero złotych ' if zlote else 'złotych '
+        liczba_setek_slownie = 'zero złotych ' if are_zlote else 'złotych '
     if (
-        (not zlote or liczba_setek > 1) and
-        (liczba_setek - (liczba_setek // 10 * 10)) == 1
+        (not are_zlote or liczba_setek > 1) and
+        (liczba_setek - (liczba_setek // 100)) == 1
     ):
         liczba_setek_slownie = 'złotych '
     formed_amount.append(liczba_setek_slownie)
