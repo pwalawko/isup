@@ -69,7 +69,6 @@ def split_amount(amount):
 
 
 def plural_form(n):
-    plural = 0
     if n == 1:
         plural = 0
     else:
