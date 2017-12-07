@@ -72,7 +72,7 @@ def plural_form(n):
     if n == 1:
         plural = 0
     else:
-        if n%10 >= 2 and n%10 <= 4 and (n%100 < 10 or n%100 >= 20):
+        if n % 10 >= 2 and n % 10 <= 4 and (n % 100 < 10 or n % 100 >= 20):
             plural = 1
         else:
             plural = 2
@@ -84,10 +84,10 @@ def form_part(amount):
     setki_trojliczby = amount // 100
     dziesiatki_trojliczby = (amount % 100) // 10
     jednosci_trojliczby = (
-            amount -
-            (setki_trojliczby * 100) -
-            (dziesiatki_trojliczby * 10)
-        ) // 1
+        amount -
+        (setki_trojliczby * 100) -
+        (dziesiatki_trojliczby * 10)
+    ) // 1
 
     setki_trojliczby_slownie = ''
     jednosci_trojliczby_slownie = ''
@@ -121,19 +121,7 @@ def form_part(amount):
     return zapis_liczby, plural_amount
 
 
-def fakturowanie(amount):
-    if not isinstance(amount, Decimal):
-        raise TypeError('Nieprawidłowe dane!')
-    if amount // 1000**len(ORDERS) > 999:
-        raise ValueError('Zbyt duża wartość!')
-    if amount < 0:
-        raise ValueError('Zbyt mała wartość!')
-    amount.quantize(Decimal('.01'))
-
-    threes = split_amount(amount)
-
-    setki = threes.pop(0)
-
+def zlote(threes, setki):
     formed_amount = []
     zipped_amount = list(zip(threes, ORDERS))[::-1]
     for part, order in zipped_amount:
@@ -158,17 +146,40 @@ def fakturowanie(amount):
     ):
         liczba_setek_slownie = 'złotych '
     formed_amount.append(liczba_setek_slownie)
+    kwota_slownie = ''.join(formed_amount)
     setki = (setki - (liczba_setek * 1)) * 100
 
+    return kwota_slownie, setki
+
+
+def grosze(setki):
     liczba_groszy = setki // 1
     grosze, liczba_groszy_slownie = form_part(liczba_groszy)
-    formed_amount.append(grosze)
     liczba_groszy_slownie = GROSZE_WORDS[liczba_groszy_slownie]
+
     if liczba_groszy == 0:
         liczba_groszy_slownie = 'zero groszy'
-    formed_amount.append(liczba_groszy_slownie)
 
-    kwota_slownie = ''.join(formed_amount)
+    formed_amount = grosze + liczba_groszy_slownie
+
+    return formed_amount
+
+
+def fakturowanie(amount):
+    if not isinstance(amount, Decimal):
+        raise TypeError('Nieprawidłowe dane!')
+    if amount // 1000**len(ORDERS) > 999:
+        raise ValueError('Zbyt duża wartość!')
+    if amount < 0:
+        raise ValueError('Zbyt mała wartość!')
+    amount.quantize(Decimal('.01'))
+
+    threes = split_amount(amount)
+    setki = threes.pop(0)
+
+    formed_amount_zlote, liczba_setek = zlote(threes, setki)
+    formed_amount_grosze = grosze(liczba_setek)
+    kwota_slownie = formed_amount_zlote + formed_amount_grosze
 
     return kwota_slownie
 
