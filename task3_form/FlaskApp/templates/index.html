@@ -11,8 +11,8 @@
         <div id="orders">
             <h1>ZAMÓWIENIA</h1>
             <ul class="entries">
-            {% for person, food in orders.items() %}
-                <li>{{ person }} : {{ food }}</li>
+            {% for order in orders %}
+                <li>{{ order[0] }} : {{ order[1] }}</li>
             {% endfor %}
         </div>
         <div id="add_order">
