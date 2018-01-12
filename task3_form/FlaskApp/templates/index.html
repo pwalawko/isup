@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Żarełko</title>
+</head>
+ 
+<body>
+ 
+    <div class="container">
+        <div id="orders">
+            <h1>ZAMÓWIENIA</h1>
+            <ul class="entries">
+            {% for person, food in orders %}
+                <li>{{ person }} : {{ food }}</li>
+            {% endfor %}
+        </div>
+        <div id="add_order">
+            <h3>Dodawanie zamówienia</h3>
+            <form id="add_order" method="POST">
+                <div>
+                    <label for="person">Zamawiający:</label>
+                    <input type="text" id="person" name="person">
+                </div>
+                <div>
+                    <label for="food">Zamówienie:</label>
+                    <input type="text" id="food" name="food">
+                </div>
+                    <input type="submit" id="submit" value="Dodaj">
+            </form>
+        </div>
+    </div>
+</body>
+ 
+</html>
