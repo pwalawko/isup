@@ -26,10 +26,16 @@
                 <div>
                     <label for="person">Zamawiający:</label>
                     <input type="text" id="person" name="person">
+                    {% for message in form.person.errors %}
+                        {{ message }}
+                    {% endfor %}
                 </div>
                 <div>
                     <label for="food">Zamówienie:</label>
                     <input type="text" id="food" name="food">
+                    {% for message in form.food.errors %}
+                        {{ message }}
+                    {% endfor %}
                 </div>
                     <input type="submit" id="submit" value="Dodaj">
             </form>

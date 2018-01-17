@@ -15,7 +15,7 @@ def show_page():
         food = form.food.data
         orders.append([person, food])
         return redirect("/")
-    return render_template('index.html', orders=orders)
+    return render_template('index.html', orders=orders, form=form)
 
 
 if __name__ == "__main__":
