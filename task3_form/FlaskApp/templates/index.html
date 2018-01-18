@@ -24,15 +24,13 @@
             <h3>Dodawanie zamówienia</h3>
             <form id="add_order" method="POST">
                 <div>
-                    <label for="person">Zamawiający:</label>
-                    <input type="text" id="person" name="person">
+                    {{ form.person.label }}: {{ form.person() }}
                     {% for message in form.person.errors %}
                         {{ message }}
                     {% endfor %}
                 </div>
                 <div>
-                    <label for="food">Zamówienie:</label>
-                    <input type="text" id="food" name="food">
+                    {{ form.food.label }}: {{ form.food() }}
                     {% for message in form.food.errors %}
                         {{ message }}
                     {% endfor %}

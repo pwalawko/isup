@@ -9,7 +9,7 @@ orders = []
 
 @app.route("/", methods=['GET', 'POST'])
 def show_page():
-    form = OrderForm(request.form)
+    form = OrderForm(request.form, person='')
     if request.method == 'POST' and form.validate():
         person = form.person.data
         food = form.food.data
