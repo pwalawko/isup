@@ -1,12 +1,29 @@
 from wtforms import Form, StringField, validators, ValidationError
 
 
+CHARACTERS = ('znak', 'znaki', 'znaków')
 req_field_msg = "Nie zapominaj o tym polu."
 
 
+def plural_form(n):
+    if n == 1:
+        plural = 0
+    else:
+        if n % 10 >= 2 and n % 10 <= 4 and (n % 100 < 10 or n % 100 >= 20):
+            plural = 1
+        else:
+            plural = 2
+
+    return plural
+
+
 def length(min=-1, max=-1):
-    message_max = 'Nie przesadzasz z tą ilością? Wpisz mniej znaków niż %d.' % max
-    message_min = 'Co tak skromnie? Wpisz więcej znaków niż %d.' % min
+    max_char_written = CHARACTERS[plural_form(max)]
+    min_char_written = CHARACTERS[plural_form(min)]
+    message_max = 'Nie przesadzasz z tą ilością? \
+        Wpisz mniej niż %d %s.' % (max, max_char_written)
+    message_min = 'Co tak skromnie? \
+        Wpisz więcej niż %d %s.' % (min, min_char_written)
 
     def _length(form, field):
         le = field.data and len(field.data) or 0
