@@ -26,7 +26,7 @@ def length(min=-1, max=-1):
         Wpisz więcej niż {min} {min_char_written}.'
 
     def _length(form, field):
-        le = field.data and len(field.data) or 0
+        le = (field.data and len(field.data)) or 0
         if le < min:
             raise ValidationError(message_min)
         elif max != -1 and le > max:
