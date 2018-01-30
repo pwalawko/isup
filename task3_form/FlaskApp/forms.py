@@ -20,10 +20,10 @@ def plural_form(n):
 def length(min=-1, max=-1):
     max_char_written = CHARACTERS[plural_form(max)]
     min_char_written = CHARACTERS[plural_form(min)]
-    message_max = 'Nie przesadzasz z tą ilością? \
-        Wpisz mniej niż %d %s.' % (max, max_char_written)
-    message_min = 'Co tak skromnie? \
-        Wpisz więcej niż %d %s.' % (min, min_char_written)
+    message_max = f'Nie przesadzasz z tą ilością? \
+        Wpisz mniej niż {max} {max_char_written}.'
+    message_min = f'Co tak skromnie? \
+        Wpisz więcej niż {min} {min_char_written}.'
 
     def _length(form, field):
         le = field.data and len(field.data) or 0
