@@ -17,20 +17,20 @@ def plural_form(n):
     return plural
 
 
-def length(min=-1, max=-1):
-    max_char_written = CHARACTERS[plural_form(max)]
-    min_char_written = CHARACTERS[plural_form(min)]
-    message_max = f'Nie przesadzasz z tą ilością? \
-        Wpisz mniej niż {max} {max_char_written}.'
-    message_min = f'Co tak skromnie? \
-        Wpisz więcej niż {min} {min_char_written}.'
+def length(min_le=None, max_le=None):
 
     def _length(form, field):
         le = (field.data and len(field.data)) or 0
-        if le < min:
-            raise ValidationError(message_min)
-        elif max != -1 and le > max:
-            raise ValidationError(message_max)
+        if min_le is not None and le < min_le:
+            raise ValidationError(
+                f'Co tak skromnie? Wpisz więcej niż \
+                {min_le} {CHARACTERS[plural_form(min_le)]}.'
+            )
+        elif max_le is not None and le > max_le:
+            raise ValidationError(
+                f'Nie przesadzasz z tą ilością? Wpisz mniej niż \
+                {max_le} {CHARACTERS[plural_form(max_le)]}.'
+            )
 
     return _length
 
@@ -38,9 +38,9 @@ def length(min=-1, max=-1):
 class OrderForm(Form):
     person = StringField('Zamawiający', [
         validators.InputRequired(req_field_msg),
-        length(min=3, max=64)
+        length(min_le=3, max_le=64)
     ])
     food = StringField('Zamówienie', [
         validators.InputRequired(req_field_msg),
-        length(max=256)
+        length(max_le=256)
     ])
