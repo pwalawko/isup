@@ -51,6 +51,8 @@ def show_page():
             return render_template(
                 'index.html',
                 orders=orders,
+                person=person,
+                food=food,
                 person_val_msg=person_val_msg,
                 food_val_msg=food_val_msg
             )

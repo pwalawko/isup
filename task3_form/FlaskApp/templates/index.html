@@ -25,14 +25,14 @@
             <form id="add_order" method="POST">
                 <div>
                     <label for="person">Zamawiający:</label>
-                    <input type="text" id="person" name="person">
+                    <input type="text" id="person" name="person" value="{{ person }}">
                     {% if person_val_msg %}
                         {{ person_val_msg }}
                     {% endif %}
                 </div>
                 <div>
                     <label for="food">Zamówienie:</label>
-                    <input type="text" id="food" name="food">
+                    <input type="text" id="food" name="food" value="{{ food }}">
                     {% if food_val_msg %}
                         {{ food_val_msg }}
                     {% endif %}
