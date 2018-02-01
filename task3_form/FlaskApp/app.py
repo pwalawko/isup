@@ -48,13 +48,21 @@ def show_page():
         )
 
         if person_val_msg or food_val_msg:
+            person_is_valid = None
+            food_is_valid = None
+            if person_val_msg:
+                person_is_valid = "is-invalid"
+            if food_val_msg:
+                food_is_valid = "is-invalid"
             return render_template(
                 'index.html',
                 orders=orders,
                 person=person,
                 food=food,
                 person_val_msg=person_val_msg,
-                food_val_msg=food_val_msg
+                food_val_msg=food_val_msg,
+                person_is_valid=person_is_valid,
+                food_is_valid=food_is_valid
             )
 
         orders.append([person, food])
