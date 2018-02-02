@@ -9,14 +9,10 @@ orders = []
 
 def plural_form(n):
     if n == 1:
-        plural = 0
-    else:
-        if n % 10 >= 2 and n % 10 <= 4 and (n % 100 < 10 or n % 100 >= 20):
-            plural = 1
-        else:
-            plural = 2
-
-    return plural
+        return 0
+    if n % 10 >= 2 and n % 10 <= 4 and (n % 100 < 10 or n % 100 >= 20):
+        return 1
+    return 2
 
 
 def length_validation(field, req=False, min_le=None, max_le=None):
