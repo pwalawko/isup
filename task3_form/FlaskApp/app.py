@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request
+from flask import Flask, render_template, request, redirect
 
 
 app = Flask(__name__)
@@ -18,7 +18,7 @@ def plural_form(n):
 def length_validation(field, req=False, min_le=None, max_le=None):
     field_length = (field and len(field)) or 0
     if field_length == 0:
-        if req is True:
+        if req:
             return "Nie zapomnij o tym polu."
     elif min_le is not None and field_length < min_le:
         return f'Co tak skromnie? Wpisz co najmniej \
@@ -58,6 +58,7 @@ def show_page():
             )
 
         orders.append([person, food])
+        return redirect("/")
 
     return render_template(
         'index.html', orders=orders,
