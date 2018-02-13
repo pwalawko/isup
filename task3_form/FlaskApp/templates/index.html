@@ -3,6 +3,11 @@
 
 <head>
     <title>Żarełko</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="http://getbootstrap.com/dist/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.0/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 </head>
  
 <body>
@@ -18,15 +23,25 @@
         <div id="add_order">
             <h3>Dodawanie zamówienia</h3>
             <form id="add_order" method="POST">
-                <div>
+                <div class="form-group">
                     <label for="person">Zamawiający:</label>
-                    <input type="text" id="person" name="person">
+                    <input type="text" class="form-control {{ person_is_valid }}" id="person" name="person" value="{{ person }}">
+                    {% if person_val_msg %}
+                    <div class="invalid-feedback">
+                        {{ person_val_msg }}
+                    </div>
+                    {% endif %}
                 </div>
-                <div>
+                <div class="form-group">
                     <label for="food">Zamówienie:</label>
-                    <input type="text" id="food" name="food">
+                    <input type="text" class="form-control {{ food_is_valid }}" id="food" name="food" value="{{ food }}">
+                    {% if food_val_msg %}
+                    <div class="invalid-feedback">
+                        {{ food_val_msg }}
+                    </div>
+                    {% endif %}
                 </div>
-                    <input type="submit" id="submit" value="Dodaj">
+                    <input type="submit" class="btn btn-primary" id="submit" value="Dodaj">
             </form>
         </div>
     </div>
