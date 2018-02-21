@@ -16,9 +16,12 @@
         <div id="orders">
             <h1>ZAMÓWIENIA</h1>
             <ul class="entries">
-            {% for person, food in orders %}
-                <li>{{ person }} : {{ food }}</li>
+            {% for entry in entries %}
+                <li>{{ entry.person }} : {{ entry.food }}</li>
+            {% else %}
+                <span>Nie ma jeszcze żadnych zamówień.</span>
             {% endfor %}
+            </ul>
         </div>
         <div id="add_order">
             <h3>Dodawanie zamówienia</h3>
